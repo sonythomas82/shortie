@@ -1,0 +1,6 @@
+{
+    "name": "shortie",
+    "version": "1.0",
+    "description": "Personal URL shortener",
+    "manifest_version": 2
+  }
