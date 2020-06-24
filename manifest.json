@@ -2,5 +2,12 @@
     "name": "shortie",
     "version": "1.0",
     "description": "Personal URL shortener",
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+    "permissions": [
+        "tabs"
+    ],
     "manifest_version": 2
-  }
+}
