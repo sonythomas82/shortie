@@ -1,5 +1,5 @@
-const regex = RegExp('https*:\/\/go\/[a-zA-Z]+\/?');
 let urls;
+let prefix;
 
 fetch("./urls.json")
     .then(function (urlData) {
@@ -7,30 +7,24 @@ fetch("./urls.json")
     })
     .then(function (urlJson) {
         urls = urlJson;
+        prefix = urlJson["prefix"];
     });
+
+var regex1 = "https*:\/\/" + prefix + "\/[a-zA-Z]+\/?"
+// const regex = RegExp('https*:\/\/' + prefix + '\/[a-zA-Z]+\/?');
+const regex = RegExp(regex1);
+
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     if (changeInfo.url) {
+        alert('prefix : ' + prefix); 
         if (regex.test(changeInfo.url)) {
-
             alert('URL Matches the Regex : ' + changeInfo.url.replace(/^https*:\/\/go\/|\/?$/g, '') + " -> " + urls["wiki"].url);
-
-            // chrome.tabs.update({url:"http://en.wikipedia.org"});
             chrome.tabs.update({
-                url: urls[changeInfo.url.replace(/^https*:\/\/go\/|\/?$/g, '')].url
+                url: urls[changeInfo.url.replace('/^https*:\/\/' + prefix + '\/|\/?$/g', '')].url
             });
-
-
         }
     }
-    // chrome.tabs.query({
-    //     active: true,
-    //     lastFocusedWindow: true
-    // }, tabs => {
-    //     let url = tabs[0].url;
-    // alert('Hello, World!' + url);
-    // use `url` here inside the callback because it's asynchronous!
-    // });
 });
 
 // URLs
