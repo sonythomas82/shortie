@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * Get update URL from chrome tab and update to URL text field
+ */
 function updateUrl() {
     chrome.tabs.query({
         active: true,
@@ -9,110 +12,79 @@ function updateUrl() {
     });
 }
 
-function addToJson() {
-    document.getElementById('textbox_id').value
-}
+// function addToJson() {
+// document.getElementById('textbox_id').value;
+// }
 
+/**
+ * Listener to trigger UpdateUrl() to update fullUrl text field
+ */
 document.addEventListener('DOMContentLoaded', function () {
     console.log("Update URL to be called");
     updateUrl();
 });
 
-
-
+/**
+ * Event listener for Add button
+ */
 document.getElementById("addNewUrl").addEventListener("click", saveUrl);
 
+/**
+ * Get full and short URL from textfield
+ */
 function saveUrl() {
-    // Get a value saved in a form.
-    // console.log("Url to be saved");
-
     var fullUrl = (document.getElementById('fullUrl').value).toString();
     var shortUrl = (document.getElementById('shortUrl').value).toString();
 
-
-    alert("Full Url : " + fullUrl);
-    alert("Short Url : " + shortUrl);
-    // // Check that there's some code there.
-    // if (!fullUrl || !shortUrl) {
-    //     alert('Error: No value specified');
-    //     return;
-    // }
-    // // Save it using the Chrome extension storage API.
-    // chrome.storage.local.set({
-    //     'yt': 'hgfdhgfdhgfhfd'
-    // }, function () {
-    //     // Notify that we saved.
-    //     alert('URL saved');
-    // });
-
-    // var key = 'a'.shortUrl;
-    var resultsArray = fullUrl.toString();
-
-    chrome.storage.local.set({
-        shortUrl: fullUrl
-    }, function () {
-        // Notify that we saved.
-        alert('URL saved');
-    });
-
-    chrome.storage.local.set({
-        'results': []
-    });
-
-    var result = {
-        shortUrl: fullUrl
-    };
-
-    // next we will push each individual results object into an array
-    chrome.storage.local.get('results', function (item) {
-        item.results.push(result);
-        chrome.storage.local.set({
-            'results': item.results
-        });
-    });
-
-    chrome.storage.local.get('results', function (item) {
-        alert(" Value -> " + item.results)
-    });
-
-
-    // chrome.storage.local.set({
-    //     shortUrl: fullUrl
-    // });
-
-    // chrome.storage.local.set({
-    //     shortUrl: fullUrl
-    // }, function () {
-    //     // Notify that we saved.
-    //     alert('URL saved');
-    // });
-    var key = 'yt'
-    chrome.storage.local.set({
-        key: resultsArray
-    });
-
-    chrome.storage.local.get(key, function (result) {
-        alert('result: ' + result[key]);
-    });
-
-    var value = "TEst 2"
-
-    // chrome.storage.local.set({
-    //     yt: value
-    // }, function () {
-    //     alert('Value is set to ' + value);
-    // });
-
-    // chrome.storage.local.get(shortUrl, function (result) {
-    //     alert('Value currently is ' + result.shortUrl);
-    //     console.debug('Value currently is ' + result.toString());
-    // });
+    addURL(shortUrl, fullUrl);
 }
 
-// function Load(Id) {
-//     var key = Id.toString();
-//     key = 'a'.key;
-//     chrome.storage.local.get(key, function (result) {
-//         console.debug('result: ', result.key);
-//     });
+
+/**
+ * Get full URL using short URL from chrome local storage
+ * @param {string} shortUrl 
+ */
+// function getURL(shortUrl) {
+    // var key = 'URLs';
+    // chrome.storage.local.get(key, function (result) {
+        // alert('Full URL:' + result[key][shortUrl]);
+        // return result[key][shortUrl];
+    // });
 // }
+
+/**
+ * Add full and short URL to the chrome local storage
+ * @param {string} shortUrl 
+ * @param {string} fullUrl 
+ */
+function addURL(shortUrl, fullUrl) {
+    var key = 'URLs';
+
+    chrome.storage.local.get(key, function (result) {
+        if (isJSON(result[key]) && result[key] != undefined) {
+            result[key][shortUrl] = fullUrl;
+        } else {
+            result = {};
+            var obj = {};
+
+            obj[shortUrl] = fullUrl;
+
+            result[key] = obj;
+        }
+        chrome.storage.local.set(result);
+        // alert('URL saved: ' + JSON.stringify(result));
+    });
+}
+
+/**
+ * Returns true if JSON object
+ * @param {*} data 
+ */
+function isJSON(data) {
+    try {
+        JSON.stringify(data);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
