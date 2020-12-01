@@ -12,10 +12,6 @@ function updateUrl() {
     });
 }
 
-// function addToJson() {
-// document.getElementById('textbox_id').value;
-// }
-
 /**
  * Listener to trigger UpdateUrl() to update fullUrl text field
  */
@@ -39,19 +35,6 @@ function saveUrl() {
     addURL(shortUrl, fullUrl);
 }
 
-
-/**
- * Get full URL using short URL from chrome local storage
- * @param {string} shortUrl 
- */
-// function getURL(shortUrl) {
-    // var key = 'URLs';
-    // chrome.storage.local.get(key, function (result) {
-        // alert('Full URL:' + result[key][shortUrl]);
-        // return result[key][shortUrl];
-    // });
-// }
-
 /**
  * Add full and short URL to the chrome local storage
  * @param {string} shortUrl 
@@ -66,13 +49,10 @@ function addURL(shortUrl, fullUrl) {
         } else {
             result = {};
             var obj = {};
-
             obj[shortUrl] = fullUrl;
-
             result[key] = obj;
         }
         chrome.storage.local.set(result);
-        // alert('URL saved: ' + JSON.stringify(result));
     });
 }
 

@@ -1,7 +1,5 @@
 {
     "prefix": "go",
-    "wiki": {
-        "url": "https://www.google.com/",
-        "count": 0
-    }
+    "wiki": "https://www.google.com/",
+    "anime" : "test"
 }
