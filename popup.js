@@ -68,3 +68,17 @@ function isJSON(data) {
         return false;
     }
 }
+
+/**
+ * Event listener for Settings button
+ */
+document.getElementById("viewSettings").addEventListener("click", openUrlView);
+
+/**
+ * Open urlView HTML page in new tab
+ */
+function openUrlView() {
+    chrome.tabs.create({
+        url: chrome.runtime.getURL("urlView.html")
+    });
+}
