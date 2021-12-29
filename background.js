@@ -25,10 +25,13 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 function updateChromeUrl(tabId, shortUrl) {
     var key = 'URLs';
     chrome.storage.local.get(key, function (result) {
-        if (result[key][shortUrl]) {
+        url = result[key].find(url => url.shortUrl == shortUrl);
+        if (url) {
             chrome.tabs.update(tabId, {
-                url: result[key][shortUrl]
+                'url': url.fullUrl
             });
+            url.viewCounter++;
+            chrome.storage.local.set(result);
         }
     });
 }
