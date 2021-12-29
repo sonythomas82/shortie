@@ -14,5 +14,10 @@
         "tabs",
         "storage"
     ],
+    "icons": {
+        "16": "./assets/shortie-icon.png",
+        "48": "./assets/shortie-icon.png",
+        "128": "./assets/shortie-icon.png"
+    },
     "manifest_version": 2
 }
